@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "my-tailwind-app/**"
+  pull_request:
+    branches: ["**"]
+    paths:
+      - "my-tailwind-app/**"
+
+jobs:
+  typecheck:
+    name: Type Check & Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: my-tailwind-app
+    env:
+      NEXT_PUBLIC_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
+      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: my-tailwind-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
