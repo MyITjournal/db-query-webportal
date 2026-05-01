@@ -12,6 +12,7 @@ export interface SessionUser {
 
 export interface SessionData {
   token?: string;
+  refreshToken?: string;
   user?: SessionUser;
   csrfToken?: string;
 }

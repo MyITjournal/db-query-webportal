@@ -7,17 +7,20 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const token = searchParams.get("token");
+    const token = searchParams.get("token") || searchParams.get("access_token");
+  const refreshToken = searchParams.get("refresh_token");
   const error = searchParams.get("error");
 
   if (error || !token) {
     return NextResponse.redirect(
-      new URL(`/login?error=${encodeURIComponent(error || "auth_failed")}`, request.url)
+      new URL(
+        `/login?error=${encodeURIComponent(error || "auth_failed")}`,
+        request.url,
+      ),
     );
   }
 
-  // Fetch the user profile from backend using the token
-  let user = null;
+    let user = null;
   try {
     const res = await fetch(`${BACKEND}/api/me`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -28,11 +31,12 @@ export async function GET(request: NextRequest) {
       user = data.user || data;
     }
   } catch {
-    // /api/me might not exist; proceed without user metadata
+    return;
   }
 
   const session = await getSession();
   session.token = token;
+  session.refreshToken = refreshToken ?? undefined;
   session.user = user;
   session.csrfToken = randomBytes(32).toString("hex");
   await session.save();
