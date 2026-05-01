@@ -12,6 +12,7 @@ export interface SessionUser {
 
 export interface SessionData {
   token?: string;
+  refreshToken?: string;
   user?: SessionUser;
   csrfToken?: string;
 }
@@ -28,6 +29,6 @@ export const sessionOptions: SessionOptions = {
 };
 
 export async function getSession(): Promise<IronSession<SessionData>> {
-  const cookieStore = await cookies();
+  const cookieStore = cookies();
   return getIronSession<SessionData>(cookieStore, sessionOptions);
 }
