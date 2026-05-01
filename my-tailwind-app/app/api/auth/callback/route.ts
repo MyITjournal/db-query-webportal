@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-    const token = searchParams.get("token") || searchParams.get("access_token");
+  const token = searchParams.get("token") || searchParams.get("access_token");
   const refreshToken = searchParams.get("refresh_token");
   const error = searchParams.get("error");
 
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-    let user = null;
+  let user = null;
   try {
     const res = await fetch(`${BACKEND}/api/me`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       user = data.user || data;
     }
   } catch {
-    return;
+    // /api/me not available; proceed without user metadata
   }
 
   const session = await getSession();
