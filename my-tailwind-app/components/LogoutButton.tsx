@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 const LogOut = ({ className }: { className?: string }) => (
   <svg
     className={className}
@@ -16,7 +17,6 @@ const LogOut = ({ className }: { className?: string }) => (
     />
   </svg>
 );
-import { useState } from "react";
 
 export default function LogoutButton() {
   const router = useRouter();
