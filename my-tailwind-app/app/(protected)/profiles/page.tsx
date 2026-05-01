@@ -13,6 +13,7 @@ interface SearchParams {
   nationality?: string;
   country?: string;
   search?: string;
+  [key: string]: string | undefined;
 }
 
 async function fetchProfiles(token: string, params: SearchParams) {
