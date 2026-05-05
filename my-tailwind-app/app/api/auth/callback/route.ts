@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
   let user = null;
   try {
-    const res = await fetch(`${BACKEND}/api/me`, {
+    const res = await fetch(`${BACKEND}/api/users/me`, {
       headers: { Authorization: `Bearer ${token}` },
       cache: "no-store",
     });

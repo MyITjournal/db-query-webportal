@@ -14,6 +14,7 @@ export async function backendFetch(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      "X-API-Version": "1",
       ...(options.headers as Record<string, string>),
     },
     cache: "no-store",
