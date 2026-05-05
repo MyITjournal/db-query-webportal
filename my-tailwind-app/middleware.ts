@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const PROTECTED = ["/dashboard", "/profiles", "/search", "/account"];
+const PROTECTED = ["/profiles", "/search", "/account"];
 const AUTH_ONLY = ["/login"]; // redirect to dashboard if already authed
 const COOKIE_NAME = "insighta_session";
 
@@ -26,11 +26,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/login",
-    "/dashboard/:path*",
-    "/profiles/:path*",
-    "/search/:path*",
-    "/account/:path*",
-  ],
+  matcher: ["/login", "/profiles/:path*", "/search/:path*", "/account/:path*"],
 };

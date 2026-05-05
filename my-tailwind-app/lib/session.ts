@@ -32,3 +32,10 @@ export async function getSession(): Promise<IronSession<SessionData>> {
   const cookieStore = cookies();
   return getIronSession<SessionData>(cookieStore, sessionOptions);
 }
+
+export async function getSessionFromResponse(
+  request: Request,
+  response: Response,
+): Promise<IronSession<SessionData>> {
+  return getIronSession<SessionData>(request, response, sessionOptions);
+}

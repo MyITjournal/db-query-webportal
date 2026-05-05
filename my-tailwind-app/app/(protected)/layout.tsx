@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import Navbar from "@/components/Navbar";
 
@@ -8,10 +7,6 @@ export default async function ProtectedLayout({
   children: React.ReactNode;
 }) {
   const session = await getSession();
-
-  if (!session.token) {
-    redirect("/login");
-  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
