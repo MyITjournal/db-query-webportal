@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "@/lib/session";
+import { getSessionFromResponse } from "@/lib/session";
 import { BACKEND } from "@/lib/api";
 import { randomBytes } from "crypto";
 
@@ -28,18 +28,21 @@ export async function GET(request: NextRequest) {
     });
     if (res.ok) {
       const data = await res.json();
-      user = data.user || data;
+      user = data.user || data.data || data;
     }
   } catch {
-    // /api/me not available; proceed without user metadata
+    // proceed without user metadata
   }
 
-  const session = await getSession();
+  // Create the redirect response first, then set the session cookie ON it
+  const response = NextResponse.redirect(new URL("/dashboard", request.url));
+
+  const session = await getSessionFromResponse(request, response);
   session.token = token;
   session.refreshToken = refreshToken ?? undefined;
   session.user = user;
   session.csrfToken = randomBytes(32).toString("hex");
   await session.save();
 
-  return NextResponse.redirect(new URL("/dashboard", request.url));
+  return response;
 }
